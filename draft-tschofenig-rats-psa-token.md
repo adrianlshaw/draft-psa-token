@@ -55,12 +55,6 @@ normative:
     title: Platform Security Architecture Security Model 1.0 (PSA-SM)
     target: https://pages.arm.com/psa-resources-sm.html
     date: 19. Feb. 2019
-  EAN-13:
-    author:
-      org: GS1
-    title: International Article Number - EAN/UPC barcodes
-    target: https://www.gs1.org/standards/barcodes/ean-upc
-    date: 2019
   PSA-FF:
     author:
       org: Arm
