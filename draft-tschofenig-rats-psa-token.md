@@ -228,17 +228,6 @@ This claim MUST be present in a PSA attestation token.
 {::include cddl/psa-implementation-id.cddl}
 ~~~
 
-### Hardware Version
-
-The Hardware Version claim provides metadata linking the token to the GDSII
-that went to fabrication for this instance. It can be used to link the class of
-chip and PSA RoT to the data on a certification website. It MUST be represented
-as a thirteen-digit {{EAN-13}}.
-
-~~~
-{::include cddl/psa-hardware-version.cddl}
-~~~
-
 ## Target State Claims
 
 ### Security Lifecycle
@@ -412,8 +401,6 @@ symmetric key algorithms, the structure MUST be COSE_Mac0.
 {::include cddl/psa-boot-seed.cddl}
 
 {::include cddl/psa-client-id.cddl}
-
-{::include cddl/psa-hardware-version.cddl}
 
 {::include cddl/psa-implementation-id.cddl}
 
