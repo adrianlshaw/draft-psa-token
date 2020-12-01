@@ -22,10 +22,28 @@ document specifies the PSA attestation token structure and semantics.
 of claims in a way similar to EAT (Entity Attestation Token). This
 specification describes what claims are used by PSA compliant systems. 
     " name="description">
-<meta content="xml2rfc 2.40.0" name="generator">
+<meta content="xml2rfc 3.3.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-tschofenig-rats-psa-token" name="ietf.draft">
-<link href="draft-tschofenig-rats-psa-token.xml" type="application/rfc+xml" rel="alternate">
+<!-- Generator version information:
+  xml2rfc 3.3.0
+    Python 3.7.6
+    appdirs 1.4.4
+    ConfigArgParse 1.2.3
+    google-i18n-address 2.3.4
+    html5lib 1.0.1
+    intervaltree 3.0.2
+    Jinja2 2.11.2
+    kitchen 1.2.6
+    lxml 4.6.1
+    pycountry 18.12.8
+    pyflakes 2.1.0
+    PyYAML 5.3.1
+    requests 2.20.1
+    setuptools 40.8.0
+    six 1.11.0
+-->
+<link href="draft-tschofenig-rats-psa-token.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">@import url('https://martinthomson.github.io/i-d-template/fonts.css');
 
@@ -39,7 +57,7 @@ html {
   --small-font-size: 14.5px;
 }
 body {
-  max-width: 624px;
+  max-width: 600px;
   margin: 75px auto;
   padding: 0 5px;
   color: var(--text-color);
@@ -87,9 +105,6 @@ p {
   padding: 0;
   margin: 0.5em 0;
   text-align: left;
-}
-div, span {
-  position: relative;
 }
 div {
   margin: 0;
@@ -189,6 +204,9 @@ dl > dd > dl {
   margin-top: 0.5em;
   margin-bottom: 0em;
 }
+dd.break {
+  display: none;
+}
 
 /* links */
 a, a[href].selfRef:hover {
@@ -206,6 +224,9 @@ a[href]:hover {
 a[href].selfRef:hover {
   background-color: var(--highlight-color);
 }
+a.xref {
+  white-space: nowrap;
+}
 
 /* Figures */
 tt, code, pre {
@@ -214,7 +235,9 @@ tt, code, pre {
 }
 pre {
   border: 1px solid var(--line-color);
-  line-height: 17px;
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
   margin: 5px;
   padding: 5px;
 }
@@ -274,19 +297,30 @@ cite {
 
 /* tables */
 table {
-  width: 100%;
+  max-width: 100%;
   margin: 0 0 1em;
   border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
   border: 1px solid var(--line-color);
 }
 th, td {
   text-align: left;
   vertical-align: top;
-  padding: 0.5em 0.75em;
+  padding: 5px 10px;
 }
 th {
-  text-align: left;
-  background-color: #eee;
+  background-color: var(--line-color);
 }
 tr:nth-child(2n) > td {
   background-color: var(--background-color);
@@ -294,21 +328,17 @@ tr:nth-child(2n) > td {
 tr:nth-child(2n+1) > td {
   background-color: var(--highlight-color);
 }
-thead+tbody tr:nth-child(2n) > td {
+thead+tbody > tr:nth-child(2n) > td {
   background-color: var(--highlight-color);
 }
-thead+tbody tr:nth-child(2n+1) > td {
+thead+tbody > tr:nth-child(2n+1) > td {
   background-color: var(--background-color);
 }
 table caption {
-  font-style: italic;
-  margin: 0.3em 0;
-  padding: 0;
-  text-align: left;
+  margin: 0;
+  padding: 3px 1em;
 }
 table p {
-  /* XXX to avoid bottom margin on table row signifiers. If paragraphs should
-     be allowed within tables more generally, it would be far better to select on a class. */
   margin: 0;
 }
 
@@ -398,6 +428,9 @@ hr {
   padding-left: 1.2em;
   text-indent: -1.2em;
 }
+#toc a.xref {
+  white-space: normal;
+}
 /* references */
 .references dt {
   text-align: right;
@@ -439,7 +472,7 @@ hr {
   font-weight: 700;
 }
 /* make the index two-column on all but the smallest screens */
-@media (min-width: 600px) {
+@media (min-width: 500px) {
   .index ul {
     column-count: 2;
     column-gap: 20px;
@@ -474,16 +507,12 @@ hr.addr {
   color: #ddd;
   max-width: calc(100% - 16px);
 }
-@media (min-width: 600px) {
+@media (min-width: 500px) {
   #authors-addresses > section {
-    display: relative;
-    padding: 32px 0 0;
     column-count: 2;
     column-gap: 20px;
   }
-  #name-authors-address {
-    position: absolute;
-    top: 0px;
+  #authors-addresses > section > h2 {
     column-span: all;
   }
   /* hack for break-inside: avoid-column */
@@ -493,21 +522,8 @@ hr.addr {
   }
 }
 
-/* temporary notes */
-.rfcEditorRemove::before {
-  position: absolute;
-  top: 0.2em;
-  right: 0.2em;
-  padding: 0.2em;
-  content: "The RFC Editor will remove this note";
-  color: #b76427;
-  background-color: rgba(249, 232, 105, 0.3);
-}
-.rfcEditorRemove {
-  position: relative;
-  padding-top: 1.8em;
-  background-color: rgba(249, 232, 105, 0.3);
-  border-radius: 3px;
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
 }
 .cref {
   background-color: rgba(249, 232, 105, 0.3);
@@ -517,7 +533,7 @@ hr.addr {
   font-style: italic;
 }
 /* alternative layout for smaller screens */
-@media screen and (max-width: 953px) {
+@media screen and (max-width: 929px) {
   #toc {
     position: fixed;
     z-index: 2;
@@ -583,9 +599,10 @@ hr.addr {
 }
 
 /* alternative layout for wide screens */
-@media screen and (min-width: 954px) {
+@media screen and (min-width: 930px) {
   body {
-    padding-right: 380px;
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
   }
   #toc {
     position: fixed;
@@ -727,16 +744,13 @@ dl.dlNewline > dt {
 }
 
 /* Provide styling for table cell text alignment */
-table td.text-left,
-table th.text-left {
+table .text-left, table .text-left {
   text-align: left;
 }
-table td.text-center,
-table th.text-center {
+table .text-center, table .text-center {
   text-align: center;
 }
-table td.text-right,
-table th.text-right {
+table .text-right, table .text-right {
   text-align: right;
 }
 
@@ -782,21 +796,6 @@ address div.right {
   text-align: right;
 }
 
-/* Provide table alignment support.  We can't use the alignX classes above
-   since they do unwanted things with caption and other styling. */
-table.right {
- margin-left: auto;
- margin-right: 0;
-}
-table.center {
- margin-left: auto;
- margin-right: auto;
-}
-table.left {
- margin-left: 0;
- margin-right: auto;
-}
-
 /* Give the table caption label the same styling as the figcaption */
 
 @media print {
@@ -825,18 +824,18 @@ table.left {
   font-size: 0.9em;
 }
 </style>
-<link href="rfc-local.css" type="text/css" rel="stylesheet">
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <table class="ears">
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">PSA Attestation Token</td>
-<td class="right">March 2020</td>
+<td class="right">December 2020</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Tschofenig, et al.</td>
-<td class="center">Expires 25 September 2020</td>
+<td class="center">Expires 4 June 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -849,12 +848,12 @@ table.left {
 <dd class="internet-draft">draft-tschofenig-rats-psa-token</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2020-03-24" class="published">24 March 2020</time>
+<time datetime="2020-12-01" class="published">1 December 2020</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2020-09-25">25 September 2020</time></dd>
+<dd class="expires"><time datetime="2021-06-04">4 June 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -920,7 +919,7 @@ specification describes what claims are used by PSA compliant systems.<a href="#
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 25 September 2020.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 4 June 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -948,120 +947,174 @@ specification describes what claims are used by PSA compliant systems.<a href="#
         <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
 <a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
         </h2>
-<nav class="toc"><ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
+<nav class="toc"><ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-conventions-and-definitions" class="xref">Conventions and Definitions</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
-<ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-glossary" class="xref">Glossary</a><a href="#section-toc.1-1.2.2.1.1" class="pilcrow">¶</a></p>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-conventions-and-definitions" class="xref">Conventions and Definitions</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-glossary" class="xref">Glossary</a><a href="#section-toc.1-1.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
-</ul>
+            </ul>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-psa-claims" class="xref">PSA Claims</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
-<ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.1">
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.3.2.1">
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-caller-claims" class="xref">Caller Claims</a><a href="#section-toc.1-1.3.2.1.1" class="pilcrow">¶</a></p>
-<ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.1.2.1">
-                    <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="xref">3.1.1</a>.  <a href="#name-auth-challenge" class="xref">Auth Challenge</a><a href="#section-toc.1-1.3.2.1.2.1.1" class="pilcrow">¶</a></p>
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.3.2.1.2.1">
+                    <p id="section-toc.1-1.3.2.1.2.1.1"><a href="#section-3.1.1" class="xref">3.1.1</a>.  <a href="#name-nonce" class="xref">Nonce</a><a href="#section-toc.1-1.3.2.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.1.2.2">
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.1.2.2">
                     <p id="section-toc.1-1.3.2.1.2.2.1"><a href="#section-3.1.2" class="xref">3.1.2</a>.  <a href="#name-client-id" class="xref">Client ID</a><a href="#section-toc.1-1.3.2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
-</ul>
+                </ul>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.2">
+              <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-target-identification-claim" class="xref">Target Identification Claims</a><a href="#section-toc.1-1.3.2.2.1" class="pilcrow">¶</a></p>
-<ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.3.2.2.2.1">
                     <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="xref">3.2.1</a>.  <a href="#name-instance-id" class="xref">Instance ID</a><a href="#section-toc.1-1.3.2.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.2.2.2">
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.2.2.2">
                     <p id="section-toc.1-1.3.2.2.2.2.1"><a href="#section-3.2.2" class="xref">3.2.2</a>.  <a href="#name-implementation-id" class="xref">Implementation ID</a><a href="#section-toc.1-1.3.2.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.2.2.3">
-                    <p id="section-toc.1-1.3.2.2.2.3.1"><a href="#section-3.2.3" class="xref">3.2.3</a>.  <a href="#name-hardware-version" class="xref">Hardware Version</a><a href="#section-toc.1-1.3.2.2.2.3.1" class="pilcrow">¶</a></p>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.2.2.3">
+                    <p id="section-toc.1-1.3.2.2.2.3.1"><a href="#section-3.2.3" class="xref">3.2.3</a>.  <a href="#name-certification-reference" class="xref">Certification Reference</a><a href="#section-toc.1-1.3.2.2.2.3.1" class="pilcrow">¶</a></p>
 </li>
-</ul>
+                </ul>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.3">
+              <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.3">
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-target-state-claims" class="xref">Target State Claims</a><a href="#section-toc.1-1.3.2.3.1" class="pilcrow">¶</a></p>
-<ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.3.2.1">
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.3.2.3.2.1">
                     <p id="section-toc.1-1.3.2.3.2.1.1"><a href="#section-3.3.1" class="xref">3.3.1</a>.  <a href="#name-security-lifecycle" class="xref">Security Lifecycle</a><a href="#section-toc.1-1.3.2.3.2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.3.2.2">
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.3.2.2">
                     <p id="section-toc.1-1.3.2.3.2.2.1"><a href="#section-3.3.2" class="xref">3.3.2</a>.  <a href="#name-boot-seed" class="xref">Boot Seed</a><a href="#section-toc.1-1.3.2.3.2.2.1" class="pilcrow">¶</a></p>
 </li>
-</ul>
+                </ul>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.4">
+              <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.4">
                 <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-software-inventory-claims" class="xref">Software Inventory Claims</a><a href="#section-toc.1-1.3.2.4.1" class="pilcrow">¶</a></p>
-<ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.4.2.1">
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.3.2.4.2.1">
                     <p id="section-toc.1-1.3.2.4.2.1.1"><a href="#section-3.4.1" class="xref">3.4.1</a>.  <a href="#name-software-components" class="xref">Software Components</a><a href="#section-toc.1-1.3.2.4.2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.4.2.2">
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.4.2.2">
                     <p id="section-toc.1-1.3.2.4.2.2.1"><a href="#section-3.4.2" class="xref">3.4.2</a>.  <a href="#name-no-software-measurements" class="xref">No Software Measurements</a><a href="#section-toc.1-1.3.2.4.2.2.1" class="pilcrow">¶</a></p>
 </li>
-</ul>
+                </ul>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.5">
+              <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.5">
                 <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="xref">3.5</a>.  <a href="#name-verification-claims" class="xref">Verification Claims</a><a href="#section-toc.1-1.3.2.5.1" class="pilcrow">¶</a></p>
-<ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.5.2.1">
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.3.2.5.2.1">
                     <p id="section-toc.1-1.3.2.5.2.1.1"><a href="#section-3.5.1" class="xref">3.5.1</a>.  <a href="#name-verification-service-indica" class="xref">Verification Service Indicator</a><a href="#section-toc.1-1.3.2.5.2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.3.2.5.2.2">
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.3.2.5.2.2">
                     <p id="section-toc.1-1.3.2.5.2.2.1"><a href="#section-3.5.2" class="xref">3.5.2</a>.  <a href="#name-profile-definition" class="xref">Profile Definition</a><a href="#section-toc.1-1.3.2.5.2.2.1" class="pilcrow">¶</a></p>
 </li>
-</ul>
+                </ul>
 </li>
-</ul>
+            </ul>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.4">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-token-encoding-and-signing" class="xref">Token Encoding and Signing</a><a href="#section-toc.1-1.4.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.5">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-collated-cddl" class="xref">Collated CDDL</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.6">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-security-and-privacy-consid" class="xref">Security and Privacy Considerations</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-verification" class="xref">Verification</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-references" class="xref">References</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
-<ul class="toc ulEmpty">
-<li class="toc ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a><a href="#section-toc.1-1.8.2.1.1" class="pilcrow">¶</a></p>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-cbor-web-token-claims-regis" class="xref">CBOR Web Token Claims Registration</a><a href="#section-toc.1-1.8.2.1.1" class="pilcrow">¶</a></p>
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.1">
+                    <p id="section-toc.1-1.8.2.1.2.1.1"><a href="#section-8.1.1" class="xref">8.1.1</a>.  <a href="#name-nonce-claim" class="xref">Nonce Claim</a><a href="#section-toc.1-1.8.2.1.2.1.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a><a href="#section-toc.1-1.8.2.2.1" class="pilcrow">¶</a></p>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.2">
+                    <p id="section-toc.1-1.8.2.1.2.2.1"><a href="#section-8.1.2" class="xref">8.1.2</a>.  <a href="#name-client-id-claim" class="xref">Client ID Claim</a><a href="#section-toc.1-1.8.2.1.2.2.1" class="pilcrow">¶</a></p>
 </li>
-</ul>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.3">
+                    <p id="section-toc.1-1.8.2.1.2.3.1"><a href="#section-8.1.3" class="xref">8.1.3</a>.  <a href="#name-instance-id-claim" class="xref">Instance ID Claim</a><a href="#section-toc.1-1.8.2.1.2.3.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-reference-implementation" class="xref">Reference Implementation</a><a href="#section-toc.1-1.9.1" class="pilcrow">¶</a></p>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.4">
+                    <p id="section-toc.1-1.8.2.1.2.4.1"><a href="#section-8.1.4" class="xref">8.1.4</a>.  <a href="#name-implementation-id-claim" class="xref">Implementation ID Claim</a><a href="#section-toc.1-1.8.2.1.2.4.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-appendix.b" class="xref">Appendix B</a>.  <a href="#name-example" class="xref">Example</a><a href="#section-toc.1-1.10.1" class="pilcrow">¶</a></p>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.5">
+                    <p id="section-toc.1-1.8.2.1.2.5.1"><a href="#section-8.1.5" class="xref">8.1.5</a>.  <a href="#name-certification-reference-cla" class="xref">Certification Reference Claim</a><a href="#section-toc.1-1.8.2.1.2.5.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-appendix.c" class="xref"></a><a href="#name-contributors" class="xref">Contributors</a><a href="#section-toc.1-1.11.1" class="pilcrow">¶</a></p>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.6">
+                    <p id="section-toc.1-1.8.2.1.2.6.1"><a href="#section-8.1.6" class="xref">8.1.6</a>.  <a href="#name-security-lifecycle-claim" class="xref">Security Lifecycle Claim</a><a href="#section-toc.1-1.8.2.1.2.6.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#section-appendix.d" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.7">
+                    <p id="section-toc.1-1.8.2.1.2.7.1"><a href="#section-8.1.7" class="xref">8.1.7</a>.  <a href="#name-boot-seed-claim" class="xref">Boot Seed Claim</a><a href="#section-toc.1-1.8.2.1.2.7.1" class="pilcrow">¶</a></p>
 </li>
-<li class="toc ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#section-appendix.e" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-toc.1-1.13.1" class="pilcrow">¶</a></p>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.8">
+                    <p id="section-toc.1-1.8.2.1.2.8.1"><a href="#section-8.1.8" class="xref">8.1.8</a>.  <a href="#name-software-components-claim" class="xref">Software Components Claim</a><a href="#section-toc.1-1.8.2.1.2.8.1" class="pilcrow">¶</a></p>
 </li>
-</ul>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.9">
+                    <p id="section-toc.1-1.8.2.1.2.9.1"><a href="#section-8.1.9" class="xref">8.1.9</a>.  <a href="#name-no-software-measurements-cl" class="xref">No Software Measurements Claim</a><a href="#section-toc.1-1.8.2.1.2.9.1" class="pilcrow">¶</a></p>
+</li>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.10">
+                    <p id="section-toc.1-1.8.2.1.2.10.1"><a href="#section-8.1.10" class="xref">8.1.10</a>. <a href="#name-verification-service-indicat" class="xref">Verification Service Indicator Claim</a><a href="#section-toc.1-1.8.2.1.2.10.1" class="pilcrow">¶</a></p>
+</li>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.1.2.11">
+                    <p id="section-toc.1-1.8.2.1.2.11.1"><a href="#section-8.1.11" class="xref">8.1.11</a>. <a href="#name-profile-definition-claim" class="xref">Profile Definition Claim</a><a href="#section-toc.1-1.8.2.1.2.11.1" class="pilcrow">¶</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-media-type-registration" class="xref">Media Type Registration</a><a href="#section-toc.1-1.8.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact ulEmpty toc" id="section-toc.1-1.8.2.3">
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="xref">8.3</a>.  <a href="#name-coap-content-formats-regist" class="xref">CoAP Content-Formats Registration</a><a href="#section-toc.1-1.8.2.3.1" class="pilcrow">¶</a></p>
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.8.2.3.2.1">
+                    <p id="section-toc.1-1.8.2.3.2.1.1"><a href="#section-8.3.1" class="xref">8.3.1</a>.  <a href="#name-registry-contents" class="xref">Registry Contents</a><a href="#section-toc.1-1.8.2.3.2.1.1" class="pilcrow">¶</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-references" class="xref">References</a><a href="#section-toc.1-1.9.1" class="pilcrow">¶</a></p>
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a><a href="#section-toc.1-1.9.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="compact ulEmpty toc" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="xref">9.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a><a href="#section-toc.1-1.9.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-appendix.a" class="xref">Appendix A</a>.  <a href="#name-reference-implementation" class="xref">Reference Implementation</a><a href="#section-toc.1-1.10.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-appendix.b" class="xref">Appendix B</a>.  <a href="#name-example" class="xref">Example</a><a href="#section-toc.1-1.11.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#section-appendix.c" class="xref"></a><a href="#name-contributors" class="xref">Contributors</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#section-appendix.d" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a><a href="#section-toc.1-1.13.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#section-appendix.e" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-toc.1-1.14.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
 </nav>
 </section>
 </div>
@@ -1101,9 +1154,9 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
         <h3 id="name-glossary">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-glossary" class="section-name selfRef">Glossary</a>
         </h3>
-<dl class="dlParallel" id="section-2.1-1">
+<span class="break"></span><dl class="dlParallel" id="section-2.1-1">
           <dt id="section-2.1-1.1">RoT</dt>
-<dd id="section-2.1-1.2">
+          <dd style="margin-left: 1.5em" id="section-2.1-1.2">
   Root of Trust, the minimal set of software, hardware and data that has to be
 implicitly trusted in the platform - there is no software or hardware at a
 deeper level that can verify that the Root of Trust is authentic and
@@ -1111,21 +1164,24 @@ unmodified.  An example of RoT is an initial bootloader in ROM, which contains
 cryptographic functions and credentials, running on a specific hardware
 platform.<a href="#section-2.1-1.2" class="pilcrow">¶</a>
 </dd>
+          <dd class="break"></dd>
 <dt id="section-2.1-1.3">SPE</dt>
-<dd id="section-2.1-1.4">
+          <dd style="margin-left: 1.5em" id="section-2.1-1.4">
   Secure Processing Environment, a platform's processing environment for
 software that provides confidentiality and integrity for its runtime state,
 from software and hardware, outside of the SPE. Contains trusted code and
 trusted hardware.  (Equivalent to Trusted Execution Environment (TEE), or
 "secure world".)<a href="#section-2.1-1.4" class="pilcrow">¶</a>
 </dd>
+          <dd class="break"></dd>
 <dt id="section-2.1-1.5">NSPE</dt>
-<dd id="section-2.1-1.6">
+          <dd style="margin-left: 1.5em" id="section-2.1-1.6">
   Non Secure Processing Environment, the security domain outside of the SPE,
 the Application domain, typically containing the application firmware,
 operating systems, and general hardware.  (Equivalent to Rich Execution
 Environment (REE), or "normal world".)<a href="#section-2.1-1.6" class="pilcrow">¶</a>
 </dd>
+        <dd class="break"></dd>
 </dl>
 </section>
 </div>
@@ -1150,19 +1206,18 @@ psa-hash-type = bytes .size 32 / bytes .size 48 / bytes .size 64
         <h3 id="name-caller-claims">
 <a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-caller-claims" class="section-name selfRef">Caller Claims</a>
         </h3>
-<div id="auth-challenge">
+<div id="nonce">
 <section id="section-3.1.1">
-          <h4 id="name-auth-challenge">
-<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-auth-challenge" class="section-name selfRef">Auth Challenge</a>
+          <h4 id="name-nonce">
+<a href="#section-3.1.1" class="section-number selfRef">3.1.1. </a><a href="#name-nonce" class="section-name selfRef">Nonce</a>
           </h4>
-<p id="section-3.1.1-1">The Auth Challenge claim is an input object from the caller. For example, this
-can be a cryptographic nonce, a hash of locally attested data. The length must
+<p id="section-3.1.1-1">The Nonce claim is a challenge from the caller. The length must
 be 32, 48, or 64 bytes.<a href="#section-3.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.1.1-2">This claim MUST be present in a PSA attestation token.<a href="#section-3.1.1-2" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-3.1.1-3">
 <pre>
-psa-nonce-claim = (
-    arm_psa_nonce =&gt; psa-hash-type
+psa-nonce = (
+    psa-nonce-key =&gt; psa-hash-type
 )
 </pre><a href="#section-3.1.1-3" class="pilcrow">¶</a>
 </div>
@@ -1173,15 +1228,17 @@ psa-nonce-claim = (
           <h4 id="name-client-id">
 <a href="#section-3.1.2" class="section-number selfRef">3.1.2. </a><a href="#name-client-id" class="section-name selfRef">Client ID</a>
           </h4>
-<p id="section-3.1.2-1">The Client ID claim represents the Partition ID of the caller. It is a signed
+<p id="section-3.1.2-1">The Client ID claim represents the security domain of the caller.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-2">In PSA, a security domain is represented by a signed
 integer whereby negative values represent callers from the NSPE and where
-positive IDs represent callers from the SPE. The value 0 is not permitted.  For
-a definition of the Partition ID, see the PSA Firmware Framework <span>[<a href="#PSA-FF" class="xref">PSA-FF</a>]</span>.<a href="#section-3.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-2">It is essential that this claim is checked in the verification process to
+positive IDs represent callers from the SPE. The value 0 is not permitted.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-3">For an example definition of client IDs, see the PSA Firmware Framework <span>[<a href="#PSA-FF" class="xref">PSA-FF</a>]</span>.<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-4">It is essential that this claim is checked in the verification process to
 ensure that a security domain, i.e., an attestation endpoint, cannot spoof a
-report from another security domain.<a href="#section-3.1.2-2" class="pilcrow">¶</a></p>
-<p id="section-3.1.2-3">This claim MUST be present in a PSA attestation token.<a href="#section-3.1.2-3" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-3.1.2-4">
+report from another security domain.<a href="#section-3.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-5">This claim MUST be present in a PSA attestation token.<a href="#section-3.1.2-5" class="pilcrow">¶</a></p>
+<p id="section-3.1.2-6">Note that the CDDL label used to be called arm_psa_partition_id.<a href="#section-3.1.2-6" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.1.2-7">
 <pre>
 psa-client-id-nspe-type = -2147483648...0
 psa-client-id-spe-type = 1..2147483647
@@ -1189,9 +1246,9 @@ psa-client-id-spe-type = 1..2147483647
 psa-client-id-type = psa-client-id-nspe-type / psa-client-id-spe-type
 
 psa-client-id = (
-    arm_psa_partition_id =&gt; psa-client-id-type
+    psa-client-id-key =&gt; psa-client-id-type
 )
-</pre><a href="#section-3.1.2-4" class="pilcrow">¶</a>
+</pre><a href="#section-3.1.2-7" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1219,7 +1276,7 @@ hash. The full definition is in <span>[<a href="#PSA-SM" class="xref">PSA-SM</a>
 psa-instance-id-type = bytes .size 33
 
 psa-instance-id = (
-    arm_psa_UEID =&gt; psa-instance-id-type
+    psa-instance-id-key =&gt; psa-instance-id-type
 )
 </pre><a href="#section-3.2.1-3" class="pilcrow">¶</a>
 </div>
@@ -1240,29 +1297,33 @@ associated certification state. The full definition is in <span>[<a href="#PSA-S
 psa-implementation-id-type = bytes .size 32
 
 psa-implementation-id = (
-    arm_psa_implementation_id =&gt; psa-implementation-id-type
+    psa-implementation-id-key =&gt; psa-implementation-id-type
 )
 </pre><a href="#section-3.2.2-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="hardware-version">
+<div id="certification-reference">
 <section id="section-3.2.3">
-          <h4 id="name-hardware-version">
-<a href="#section-3.2.3" class="section-number selfRef">3.2.3. </a><a href="#name-hardware-version" class="section-name selfRef">Hardware Version</a>
+          <h4 id="name-certification-reference">
+<a href="#section-3.2.3" class="section-number selfRef">3.2.3. </a><a href="#name-certification-reference" class="section-name selfRef">Certification Reference</a>
           </h4>
-<p id="section-3.2.3-1">The Hardware Version claim provides metadata linking the token to the GDSII
-that went to fabrication for this instance. It can be used to link the class of
-chip and PSA RoT to the data on a certification website. It MUST be represented
-as a thirteen-digit <span>[<a href="#EAN-13" class="xref">EAN-13</a>]</span>.<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-3.2.3-2">
+<p id="section-3.2.3-1">The Certification Reference claim is used to link the class of chip and PSA RoT
+of the attesting device to an associated entry in the PSA Certification
+database. It MUST be represented as a thirteen-digit <span>[<a href="#EAN-13" class="xref">EAN-13</a>]</span>.<a href="#section-3.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-3.2.3-2">Linking to the PSA Certification entry can still be achieved if this claim is
+not present in the token by making an association at a Verifier between the
+reference value and other token claim values - for example, the Implementation
+ID.<a href="#section-3.2.3-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3.2.3-3">
 <pre>
-psa-hardware-version-type = text .regexp "[0-9]{13}"
+psa-certification-reference-type = text .regexp "[0-9]{13}"
 
-psa-hardware-version = (
-    ? arm_psa_hw_version =&gt; psa-hardware-version-type
+psa-certification-reference = (
+    ? psa-certification-reference-key =&gt;
+        psa-certification-reference-type
 )
-</pre><a href="#section-3.2.3-2" class="pilcrow">¶</a>
+</pre><a href="#section-3.2.3-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1273,7 +1334,7 @@ psa-hardware-version = (
         <h3 id="name-target-state-claims">
 <a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-target-state-claims" class="section-name selfRef">Target State Claims</a>
         </h3>
-<div id="security-lifecycle">
+<div id="sec-security-lifecycle">
 <section id="section-3.3.1">
           <h4 id="name-security-lifecycle">
 <a href="#section-3.3.1" class="section-number selfRef">3.3.1. </a><a href="#name-security-lifecycle" class="section-name selfRef">Security Lifecycle</a>
@@ -1283,12 +1344,12 @@ RoT. The state is represented by an integer that is divided to convey a major
 state and a minor state. A major state is mandatory and defined by <span>[<a href="#PSA-SM" class="xref">PSA-SM</a>]</span>.
 A minor state is optional and 'IMPLEMENTATION DEFINED'. The PSA security
 lifecycle state and implementation state are encoded as follows:<a href="#section-3.3.1-1" class="pilcrow">¶</a></p>
-<ul>
-<li id="section-3.3.1-2.1">version[15:8] - PSA security lifecycle state, and<a href="#section-3.3.1-2.1" class="pilcrow">¶</a>
+<ul class="normal">
+<li class="normal" id="section-3.3.1-2.1">version[15:8] - PSA security lifecycle state, and<a href="#section-3.3.1-2.1" class="pilcrow">¶</a>
 </li>
-<li id="section-3.3.1-2.2">version[7:0] - IMPLEMENTATION DEFINED state.<a href="#section-3.3.1-2.2" class="pilcrow">¶</a>
+            <li class="normal" id="section-3.3.1-2.2">version[7:0] - IMPLEMENTATION DEFINED state.<a href="#section-3.3.1-2.2" class="pilcrow">¶</a>
 </li>
-</ul>
+          </ul>
 <p id="section-3.3.1-3">The PSA lifecycle states are illustrated in <a href="#fig-lifecycle-states" class="xref">Figure 1</a>. For PSA,
 a remote verifier can only trust reports from the PSA RoT when it is in SECURED
 or NON_PSA_ROT_DEBUG major states.<a href="#section-3.3.1-3" class="pilcrow">¶</a></p>
@@ -1520,7 +1581,7 @@ psa-lifecycle-type =
     psa-lifecycle-decommissioned-type
 
 psa-lifecycle = (
-    arm_psa_security_lifecycle =&gt; psa-lifecycle-type
+    psa-lifecycle-key =&gt; psa-lifecycle-type
 )
 </pre><a href="#section-3.3.1-6" class="pilcrow">¶</a>
 </div>
@@ -1539,7 +1600,7 @@ will allow differentiation of reports from different boot sessions.<a href="#sec
 psa-boot-seed-type = bytes .size 32
 
 psa-boot-seed = (
-    arm_psa_boot_seed =&gt; psa-boot-seed-type
+    psa-boot-seed-key =&gt; psa-boot-seed-type
 )
 </pre><a href="#section-3.3.2-3" class="pilcrow">¶</a>
 </div>
@@ -1576,15 +1637,15 @@ Software Components claim.<a href="#section-3.4.1-3" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-3.4.1-4">
 <pre>
 psa-software-component = {
-    ? 1 =&gt; text,        ; measurement type
+  ? 1 =&gt; text,          ; measurement type
     2 =&gt; psa-hash-type, ; measurement value
-    ? 4  =&gt; text,       ; version
+  ? 4 =&gt; text,          ; version
     5 =&gt; psa-hash-type, ; signer id
-    ? 6 =&gt; text,        ; measurement description
+  ? 6 =&gt; text,          ; measurement description
 }
 
 psa-software-components = (
-    arm_psa_sw_components =&gt; [ + psa-software-component ]
+    psa-software-components-key =&gt; [ + psa-software-component ]
 )
 </pre><a href="#section-3.4.1-4" class="pilcrow">¶</a>
 </div>
@@ -1596,18 +1657,18 @@ psa-software-components = (
 <p id="section-3.4.1.1-1">The Measurement Type attribute (key=1) is short string representing the role of
 this software component.<a href="#section-3.4.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-3.4.1.1-2">The following measurement types MAY be used:<a href="#section-3.4.1.1-2" class="pilcrow">¶</a></p>
-<ul>
-<li id="section-3.4.1.1-3.1">"BL": a Boot Loader<a href="#section-3.4.1.1-3.1" class="pilcrow">¶</a>
+<ul class="normal">
+<li class="normal" id="section-3.4.1.1-3.1">"BL": a Boot Loader<a href="#section-3.4.1.1-3.1" class="pilcrow">¶</a>
 </li>
-<li id="section-3.4.1.1-3.2">"PRoT": a component of the PSA Root of Trust<a href="#section-3.4.1.1-3.2" class="pilcrow">¶</a>
+              <li class="normal" id="section-3.4.1.1-3.2">"PRoT": a component of the PSA Root of Trust<a href="#section-3.4.1.1-3.2" class="pilcrow">¶</a>
 </li>
-<li id="section-3.4.1.1-3.3">"ARoT": a component of the Application Root of Trust<a href="#section-3.4.1.1-3.3" class="pilcrow">¶</a>
+              <li class="normal" id="section-3.4.1.1-3.3">"ARoT": a component of the Application Root of Trust<a href="#section-3.4.1.1-3.3" class="pilcrow">¶</a>
 </li>
-<li id="section-3.4.1.1-3.4">"App": a component of the NSPE application<a href="#section-3.4.1.1-3.4" class="pilcrow">¶</a>
+              <li class="normal" id="section-3.4.1.1-3.4">"App": a component of the NSPE application<a href="#section-3.4.1.1-3.4" class="pilcrow">¶</a>
 </li>
-<li id="section-3.4.1.1-3.5">"TS": a component of a Trusted Subsystem<a href="#section-3.4.1.1-3.5" class="pilcrow">¶</a>
+              <li class="normal" id="section-3.4.1.1-3.5">"TS": a component of a Trusted Subsystem<a href="#section-3.4.1.1-3.5" class="pilcrow">¶</a>
 </li>
-</ul>
+            </ul>
 </section>
 </div>
 <div id="measurement-value">
@@ -1675,7 +1736,7 @@ compliant with <span>[<a href="#PSA-SM" class="xref">PSA-SM</a>]</span>.<a href=
 psa-no-sw-measurements-type = 1
 
 psa-no-sw-measurement = (
-    arm_psa_no_sw_measurements =&gt; psa-no-sw-measurements-type
+    psa-no-sw-measurement-key =&gt; psa-no-sw-measurements-type
 )
 </pre><a href="#section-3.4.2-2" class="pilcrow">¶</a>
 </div>
@@ -1702,7 +1763,8 @@ verifier may choose to ignore this claim in favor of other information.<a href="
 psa-verification-service-indicator-type = text
 
 psa-verification-service-indicator = (
-    ? arm_psa_origination =&gt; psa-verification-service-indicator-type
+    ? psa-verification-service-indicator-key =&gt;
+        psa-verification-service-indicator-type
 )
 </pre><a href="#section-3.5.1-2" class="pilcrow">¶</a>
 </div>
@@ -1721,7 +1783,7 @@ for this specification MUST be PSA_IOT_PROFILE_1.<a href="#section-3.5.2-1" clas
 psa-profile-type = "PSA_IOT_PROFILE_1"
 
 psa-profile = (
-    ? arm_psa_profile_id =&gt; psa-profile-type
+    ? psa-profile-key =&gt; psa-profile-type
 )
 </pre><a href="#section-3.5.2-2" class="pilcrow">¶</a>
 </div>
@@ -1740,8 +1802,8 @@ psa-profile = (
 Entity Attestation Token (EAT) <span>[<a href="#I-D.ietf-rats-eat" class="xref">I-D.ietf-rats-eat</a>]</span>. The token consists of a
 series of claims declaring evidence as to the nature of the instance of
 hardware and software. The claims are encoded in CBOR <span>[<a href="#RFC7049" class="xref">RFC7049</a>]</span> format.  For
-asymmetric key algorithms, the signature structure MUST be COSE-Sign1.  For
-symmetric key algorithms, the structure MUST be COSE-Mac0.<a href="#section-4-1" class="pilcrow">¶</a></p>
+asymmetric key algorithms, the signature structure MUST be COSE_Sign1.  For
+symmetric key algorithms, the structure MUST be COSE_Mac0.<a href="#section-4-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="collated-cddl">
@@ -1752,36 +1814,36 @@ symmetric key algorithms, the structure MUST be COSE-Mac0.<a href="#section-4-1"
 <div class="artwork art-text alignLeft" id="section-5-1">
 <pre>
 psa-token = {
-    psa-nonce-claim,
+    psa-nonce,
     psa-instance-id,
     psa-verification-service-indicator,
     psa-profile,
     psa-implementation-id,
     psa-client-id,
     psa-lifecycle,
-    psa-hardware-version,
+    psa-certification-reference,
     psa-boot-seed,
     ( psa-software-components // psa-no-sw-measurement ),
 }
 
-arm_psa_profile_id = -75000
-arm_psa_partition_id = -75001
-arm_psa_security_lifecycle = -75002
-arm_psa_implementation_id = -75003
-arm_psa_boot_seed = -75004
-arm_psa_hw_version = -75005
-arm_psa_sw_components = -75006
-arm_psa_no_sw_measurements = -75007
-arm_psa_nonce = -75008
-arm_psa_UEID = -75009
-arm_psa_origination = -75010
+psa-profile-key = -75000
+psa-client-id-key = -75001
+psa-lifecycle-key = -75002
+psa-implementation-id-key = -75003
+psa-boot-seed-key = -75004
+psa-certification-reference-key = -75005
+psa-software-components-key = -75006
+psa-no-sw-measurement-key = -75007
+psa-nonce-key = -75008
+psa-instance-id-key = -75009
+psa-verification-service-indicator-key = -75010
 
 psa-hash-type = bytes .size 32 / bytes .size 48 / bytes .size 64
 
 psa-boot-seed-type = bytes .size 32
 
 psa-boot-seed = (
-    arm_psa_boot_seed =&gt; psa-boot-seed-type
+    psa-boot-seed-key =&gt; psa-boot-seed-type
 )
 
 psa-client-id-nspe-type = -2147483648...0
@@ -1790,41 +1852,42 @@ psa-client-id-spe-type = 1..2147483647
 psa-client-id-type = psa-client-id-nspe-type / psa-client-id-spe-type
 
 psa-client-id = (
-    arm_psa_partition_id =&gt; psa-client-id-type
+    psa-client-id-key =&gt; psa-client-id-type
 )
 
-psa-hardware-version-type = text .regexp "[0-9]{13}"
+psa-certification-reference-type = text .regexp "[0-9]{13}"
 
-psa-hardware-version = (
-    ? arm_psa_hw_version =&gt; psa-hardware-version-type
+psa-certification-reference = (
+    ? psa-certification-reference-key =&gt;
+        psa-certification-reference-type
 )
 
 psa-implementation-id-type = bytes .size 32
 
 psa-implementation-id = (
-    arm_psa_implementation_id =&gt; psa-implementation-id-type
+    psa-implementation-id-key =&gt; psa-implementation-id-type
 )
 
 psa-instance-id-type = bytes .size 33
 
 psa-instance-id = (
-    arm_psa_UEID =&gt; psa-instance-id-type
+    psa-instance-id-key =&gt; psa-instance-id-type
 )
 
 psa-no-sw-measurements-type = 1
 
 psa-no-sw-measurement = (
-    arm_psa_no_sw_measurements =&gt; psa-no-sw-measurements-type
+    psa-no-sw-measurement-key =&gt; psa-no-sw-measurements-type
 )
 
-psa-nonce-claim = (
-    arm_psa_nonce =&gt; psa-hash-type
+psa-nonce = (
+    psa-nonce-key =&gt; psa-hash-type
 )
 
 psa-profile-type = "PSA_IOT_PROFILE_1"
 
 psa-profile = (
-    ? arm_psa_profile_id =&gt; psa-profile-type
+    ? psa-profile-key =&gt; psa-profile-type
 )
 
 psa-lifecycle-unknown-type = 0x0000..0x00ff
@@ -1845,25 +1908,26 @@ psa-lifecycle-type =
     psa-lifecycle-decommissioned-type
 
 psa-lifecycle = (
-    arm_psa_security_lifecycle =&gt; psa-lifecycle-type
+    psa-lifecycle-key =&gt; psa-lifecycle-type
 )
 
 psa-software-component = {
-    ? 1 =&gt; text,        ; measurement type
+  ? 1 =&gt; text,          ; measurement type
     2 =&gt; psa-hash-type, ; measurement value
-    ? 4  =&gt; text,       ; version
+  ? 4 =&gt; text,          ; version
     5 =&gt; psa-hash-type, ; signer id
-    ? 6 =&gt; text,        ; measurement description
+  ? 6 =&gt; text,          ; measurement description
 }
 
 psa-software-components = (
-    arm_psa_sw_components =&gt; [ + psa-software-component ]
+    psa-software-components-key =&gt; [ + psa-software-component ]
 )
 
 psa-verification-service-indicator-type = text
 
 psa-verification-service-indicator = (
-    ? arm_psa_origination =&gt; psa-verification-service-indicator-type
+    ? psa-verification-service-indicator-key =&gt;
+        psa-verification-service-indicator-type
 )
 </pre><a href="#section-5-1" class="pilcrow">¶</a>
 </div>
@@ -1880,7 +1944,7 @@ security and privacy considerations of those specifications apply here as well.<
 profiles those options and allows signatures based on use of public key
 cryptography as well as MAC authentication. The token MUST be signed following
 the structure of the COSE specification <span>[<a href="#RFC8152" class="xref">RFC8152</a>]</span>.  The COSE type MUST be
-COSE-Sign1 for public key signatures or COSE-Mac0 for MAC authentication.  Note
+COSE_Sign1 for public key signatures or COSE_Mac0 for MAC authentication.  Note
 however that use of MAC authentication is NOT RECOMMENDED due to the associated
 infrastructure costs for key management and protocol complexities. It may also
 restrict the ability to interoperate with third parties.<a href="#section-6-2" class="pilcrow">¶</a></p>
@@ -1891,74 +1955,486 @@ measures to ensure that the token is only used to provision anonymous/pseudonym
 keys.<a href="#section-6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="iana-considerations">
+<div id="verification">
 <section id="section-7">
-      <h2 id="name-iana-considerations">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      <h2 id="name-verification">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-verification" class="section-name selfRef">Verification</a>
       </h2>
-<p id="section-7-1">IANA is requested to allocate the claims defined in <a href="#sec-psa-claims" class="xref">Section 3</a> to the
-CBOR Web Token (CWT) Claims registry <span>[<a href="#IANA-CWT" class="xref">IANA-CWT</a>]</span>. The change controller are
-the authors and the reference is this document.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">To verify the token, the primary need is to check correct formation and signing
+as for any CWT token.  In addition though, the verifier can operate a policy
+where values of some of the claims in this profile can be compared to reference
+values, registered with the verifier for a given deployment, in order to
+confirm that the device is endorsed by the manufacturer supply chain.  The
+policy may require that the relevant claims must have a match to a registered
+reference value.  All claims may be worthy of additional appraisal.  It is
+likely that most deployments would include a policy with appraisal for the
+following claims:<a href="#section-7-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-2.1">Instance ID - the value of the Instance ID can be used (together with the kid
+in the token COSE header, if present) to assist in locating the public key
+used to verify the token signature.<a href="#section-7-2.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-2.2">Implementation ID - the value of the Implementation ID can be used to
+identify the verification requirements of the deployment.<a href="#section-7-2.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-2.3">Software Component, Measurement Value - this value can uniquely identify a
+firmware release from the supply chain. In some cases, a verifier may
+maintain a record for a series of firmware releases, being patches to an
+original baseline release. A verification policy may then allow this value to
+match any point on that release sequence or expect some minimum level of
+maturity related to the sequence.<a href="#section-7-2.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-2.4">Software Component, Signer ID - where present in a deployment, this could
+allow a verifier to operate a more general policy than that for Measurement
+Value as above, by allowing a token to contain any firmware entries signed by
+a known Signer ID, without checking for a uniquely registered version.<a href="#section-7-2.4" class="pilcrow">¶</a>
+</li>
+      </ul>
 </section>
 </div>
+<div id="iana-considerations">
 <section id="section-8">
-      <h2 id="name-references">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
+      <h2 id="name-iana-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
+<div id="cbor-web-token-claims-registration">
 <section id="section-8.1">
+        <h3 id="name-cbor-web-token-claims-regis">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-cbor-web-token-claims-regis" class="section-name selfRef">CBOR Web Token Claims Registration</a>
+        </h3>
+<p id="section-8.1-1">This specification registers the following claims in the IANA "CBOR Web Token (CWT)
+Claims" registry <span>[<a href="#IANA-CWT" class="xref">IANA-CWT</a>]</span>, established by <span>[<a href="#RFC8392" class="xref">RFC8392</a>]</span>.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
+<div id="nonce-claim">
+<section id="section-8.1.1">
+          <h4 id="name-nonce-claim">
+<a href="#section-8.1.1" class="section-number selfRef">8.1.1. </a><a href="#name-nonce-claim" class="section-name selfRef">Nonce Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.1-1.1">Claim Name: "psa-nonce"<a href="#section-8.1.1-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.1-1.2">Claim Description: Nonce<a href="#section-8.1.1-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.1-1.3">JWT Claim Name: "psa-nonce"<a href="#section-8.1.1-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.1-1.4">Claim Key: [[Proposed: -75008]]<a href="#section-8.1.1-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.1-1.5">Claim Value Type(s): bytes (32, 48, or 64 bytes in length)<a href="#section-8.1.1-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.1-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.1-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.1-1.7">Specification Document(s): Section 3.1.1 of [[this RFC]]<a href="#section-8.1.1-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="client-id-claim">
+<section id="section-8.1.2">
+          <h4 id="name-client-id-claim">
+<a href="#section-8.1.2" class="section-number selfRef">8.1.2. </a><a href="#name-client-id-claim" class="section-name selfRef">Client ID Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.2-1.1">Claim Name: "psa-client-id"<a href="#section-8.1.2-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.2-1.2">Claim Description: Client ID<a href="#section-8.1.2-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.2-1.3">JWT Claim Name: "psa-client-id"<a href="#section-8.1.2-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.2-1.4">Claim Key: [[Proposed: -75001]]<a href="#section-8.1.2-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.2-1.5">Claim Value Type(s): signed integer<a href="#section-8.1.2-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.2-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.2-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.2-1.7">Specification Document(s): Section 3.1.2 of [[this RFC]]<a href="#section-8.1.2-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="instance-id-claim">
+<section id="section-8.1.3">
+          <h4 id="name-instance-id-claim">
+<a href="#section-8.1.3" class="section-number selfRef">8.1.3. </a><a href="#name-instance-id-claim" class="section-name selfRef">Instance ID Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.3-1.1">Claim Name: "psa-instance-id"<a href="#section-8.1.3-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.3-1.2">Claim Description: Instance ID<a href="#section-8.1.3-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.3-1.3">JWT Claim Name: "psa-instance-id"<a href="#section-8.1.3-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.3-1.4">Claim Key: [[Proposed: -75009]]<a href="#section-8.1.3-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.3-1.5">Claim Value Type(s): bytes (33 bytes in length)<a href="#section-8.1.3-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.3-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.3-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.3-1.7">Specification Document(s): Section 3.2.1 of [[this RFC]]<a href="#section-8.1.3-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="implementation-id-claim">
+<section id="section-8.1.4">
+          <h4 id="name-implementation-id-claim">
+<a href="#section-8.1.4" class="section-number selfRef">8.1.4. </a><a href="#name-implementation-id-claim" class="section-name selfRef">Implementation ID Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.4-1.1">Claim Name: "psa-implementation-id"<a href="#section-8.1.4-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.4-1.2">Claim Description: Implementation ID<a href="#section-8.1.4-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.4-1.3">JWT Claim Name: "psa-implementation-id"<a href="#section-8.1.4-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.4-1.4">Claim Key: [[Proposed: -75003]]<a href="#section-8.1.4-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.4-1.5">Claim Value Type(s): bytes (32 bytes in length)<a href="#section-8.1.4-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.4-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.4-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.4-1.7">Specification Document(s): Section 3.2.2 of [[this RFC]]<a href="#section-8.1.4-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="certification-reference-claim">
+<section id="section-8.1.5">
+          <h4 id="name-certification-reference-cla">
+<a href="#section-8.1.5" class="section-number selfRef">8.1.5. </a><a href="#name-certification-reference-cla" class="section-name selfRef">Certification Reference Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.5-1.1">Claim Name: "psa-certification-reference"<a href="#section-8.1.5-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.5-1.2">Claim Description: Certification Reference<a href="#section-8.1.5-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.5-1.3">JWT Claim Name: "psa-certification-reference"<a href="#section-8.1.5-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.5-1.4">Claim Key: [[Proposed: -75005]]<a href="#section-8.1.5-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.5-1.5">Claim Value Type(s): text<a href="#section-8.1.5-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.5-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.5-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.5-1.7">Specification Document(s): Section 3.2.3 of [[this RFC]]<a href="#section-8.1.5-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="security-lifecycle-claim">
+<section id="section-8.1.6">
+          <h4 id="name-security-lifecycle-claim">
+<a href="#section-8.1.6" class="section-number selfRef">8.1.6. </a><a href="#name-security-lifecycle-claim" class="section-name selfRef">Security Lifecycle Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.6-1.1">Claim Name: "psa-lifecycle"<a href="#section-8.1.6-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.6-1.2">Claim Description: Security Lifecycle<a href="#section-8.1.6-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.6-1.3">JWT Claim Name: "psa-lifecycle"<a href="#section-8.1.6-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.6-1.4">Claim Key: [[Proposed: -75002]]<a href="#section-8.1.6-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.6-1.5">Claim Value Type(s): unsigned integer<a href="#section-8.1.6-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.6-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.6-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.6-1.7">Specification Document(s): Section 3.3.1 of [[this RFC]]<a href="#section-8.1.6-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="boot-seed-claim">
+<section id="section-8.1.7">
+          <h4 id="name-boot-seed-claim">
+<a href="#section-8.1.7" class="section-number selfRef">8.1.7. </a><a href="#name-boot-seed-claim" class="section-name selfRef">Boot Seed Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.7-1.1">Claim Name: "psa-boot-seed"<a href="#section-8.1.7-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.7-1.2">Claim Description: Boot Seed<a href="#section-8.1.7-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.7-1.3">JWT Claim Name: "psa-boot-seed"<a href="#section-8.1.7-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.7-1.4">Claim Key: [[Proposed: -75004]]<a href="#section-8.1.7-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.7-1.5">Claim Value Type(s): bytes (32 bytes in length)<a href="#section-8.1.7-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.7-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.7-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.7-1.7">Specification Document(s): Section 3.3.2 of [[this RFC]]<a href="#section-8.1.7-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="software-components-claim">
+<section id="section-8.1.8">
+          <h4 id="name-software-components-claim">
+<a href="#section-8.1.8" class="section-number selfRef">8.1.8. </a><a href="#name-software-components-claim" class="section-name selfRef">Software Components Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.8-1.1">Claim Name: "psa-software-components"<a href="#section-8.1.8-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.8-1.2">Claim Description: Software Components<a href="#section-8.1.8-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.8-1.3">JWT Claim Name: "psa-software-components"<a href="#section-8.1.8-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.8-1.4">Claim Key: [[Proposed: -75006]]<a href="#section-8.1.8-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.8-1.5">Claim Value Type(s): array<a href="#section-8.1.8-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.8-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.8-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.8-1.7">Specification Document(s): Section 3.4.1 of [[this RFC]]<a href="#section-8.1.8-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="no-software-measurements-claim">
+<section id="section-8.1.9">
+          <h4 id="name-no-software-measurements-cl">
+<a href="#section-8.1.9" class="section-number selfRef">8.1.9. </a><a href="#name-no-software-measurements-cl" class="section-name selfRef">No Software Measurements Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.9-1.1">Claim Name: "psa-no-sw-measurement"<a href="#section-8.1.9-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.9-1.2">Claim Description: No Software Measurements<a href="#section-8.1.9-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.9-1.3">JWT Claim Name: "psa-no-sw-measurement"<a href="#section-8.1.9-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.9-1.4">Claim Key: [[Proposed: -75007]]<a href="#section-8.1.9-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.9-1.5">Claim Value Type(s): unsigned integer<a href="#section-8.1.9-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.9-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.9-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.9-1.7">Specification Document(s): Section 3.4.2 of [[this RFC]]<a href="#section-8.1.9-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="verification-service-indicator-claim">
+<section id="section-8.1.10">
+          <h4 id="name-verification-service-indicat">
+<a href="#section-8.1.10" class="section-number selfRef">8.1.10. </a><a href="#name-verification-service-indicat" class="section-name selfRef">Verification Service Indicator Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.10-1.1">Claim Name: "psa-verification-service-indicator"<a href="#section-8.1.10-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.10-1.2">Claim Description: Verification Service Indicator<a href="#section-8.1.10-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.10-1.3">JWT Claim Name: "psa-verification-service-indicator"<a href="#section-8.1.10-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.10-1.4">Claim Key: [[Proposed: -75010]]<a href="#section-8.1.10-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.10-1.5">Claim Value Type(s): text<a href="#section-8.1.10-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.10-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.10-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.10-1.7">Specification Document(s): Section 3.5.1 of [[this RFC]]<a href="#section-8.1.10-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+<div id="profile-definition-claim">
+<section id="section-8.1.11">
+          <h4 id="name-profile-definition-claim">
+<a href="#section-8.1.11" class="section-number selfRef">8.1.11. </a><a href="#name-profile-definition-claim" class="section-name selfRef">Profile Definition Claim</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.1.11-1.1">Claim Name: "psa-profile"<a href="#section-8.1.11-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.11-1.2">Claim Description: Profile Definition<a href="#section-8.1.11-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.11-1.3">JWT Claim Name: "psa-profile"<a href="#section-8.1.11-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.11-1.4">Claim Key: [[Proposed: -75000]]<a href="#section-8.1.11-1.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.11-1.5">Claim Value Type(s): text<a href="#section-8.1.11-1.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.11-1.6">Change Controller: [[Authors of this RFC]]<a href="#section-8.1.11-1.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.1.11-1.7">Specification Document(s): Section 3.5.2 of [[this RFC]]<a href="#section-8.1.11-1.7" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+</section>
+</div>
+<div id="media-type-registration">
+<section id="section-8.2">
+        <h3 id="name-media-type-registration">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-media-type-registration" class="section-name selfRef">Media Type Registration</a>
+        </h3>
+<p id="section-8.2-1">IANA is requested to register the "application/psa-attestation-token" media
+type <span>[<a href="#RFC2046" class="xref">RFC2046</a>]</span> in the "Media Types" registry <span>[<a href="#IANA-MediaTypes" class="xref">IANA-MediaTypes</a>]</span> in the
+manner described in RFC 6838 <span>[<a href="#RFC6838" class="xref">RFC6838</a>]</span>, which can be used to indicate that
+the content is a PSA Attestation Token.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-2.1">Type name: application<a href="#section-8.2-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.2">Subtype name: psa-attestation-token<a href="#section-8.2-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.3">Required parameters: n/a<a href="#section-8.2-2.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.4">Optional parameters: n/a<a href="#section-8.2-2.4" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.5">Encoding considerations: binary<a href="#section-8.2-2.5" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.6">Security considerations: See the Security Considerations section
+of [[this RFC]]<a href="#section-8.2-2.6" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.7">Interoperability considerations: n/a<a href="#section-8.2-2.7" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.8">Published specification: [[this RFC]]<a href="#section-8.2-2.8" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.9">Applications that use this media type: Attesters and Relying Parties sending
+PSA attestation tokens over HTTP(S), CoAP(S), and other transports.<a href="#section-8.2-2.9" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.10">Fragment identifier considerations: n/a<a href="#section-8.2-2.10" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.11">
+            <p id="section-8.2-2.11.1">Additional information:<a href="#section-8.2-2.11.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-8.2-2.11.2.1">Magic number(s): n/a<a href="#section-8.2-2.11.2.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-8.2-2.11.2.2">File extension(s): n/a<a href="#section-8.2-2.11.2.2" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-8.2-2.11.2.3">Macintosh file type code(s): n/a<a href="#section-8.2-2.11.2.3" class="pilcrow">¶</a>
+</li>
+            </ul>
+</li>
+          <li class="normal" id="section-8.2-2.12">Person &amp; email address to contact for further information:
+Hannes Tschofenig, Hannes.Tschofenig@arm.com<a href="#section-8.2-2.12" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.13">Intended usage: COMMON<a href="#section-8.2-2.13" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.14">Restrictions on usage: none<a href="#section-8.2-2.14" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.15">Author: Hannes Tschofenig, Hannes.Tschofenig@arm.com<a href="#section-8.2-2.15" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.16">Change controller: IESG<a href="#section-8.2-2.16" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-8.2-2.17">Provisional registration?  No<a href="#section-8.2-2.17" class="pilcrow">¶</a>
+</li>
+        </ul>
+</section>
+</div>
+<div id="coap-content-formats-registration">
+<section id="section-8.3">
+        <h3 id="name-coap-content-formats-regist">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-coap-content-formats-regist" class="section-name selfRef">CoAP Content-Formats Registration</a>
+        </h3>
+<p id="section-8.3-1">IANA is requested to register the CoAP Content-Format ID for the
+"application/psa-attestation-token" media type in the "CoAP Content-Formats"
+registry <span>[<a href="#IANA-CoAP-Content-Formats" class="xref">IANA-CoAP-Content-Formats</a>]</span>.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
+<div id="registry-contents">
+<section id="section-8.3.1">
+          <h4 id="name-registry-contents">
+<a href="#section-8.3.1" class="section-number selfRef">8.3.1. </a><a href="#name-registry-contents" class="section-name selfRef">Registry Contents</a>
+          </h4>
+<ul class="normal">
+<li class="normal" id="section-8.3.1-1.1">Media Type: application/psa-attestation-token<a href="#section-8.3.1-1.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.3.1-1.2">Encoding: -<a href="#section-8.3.1-1.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.3.1-1.3">Id: [[To-be-assigned by IANA]]<a href="#section-8.3.1-1.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-8.3.1-1.4">Reference: [[this RFC]]<a href="#section-8.3.1-1.4" class="pilcrow">¶</a>
+</li>
+          </ul>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<section id="section-9">
+      <h2 id="name-references">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<section id="section-9.1">
         <h3 id="name-normative-references">
-<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="EAN-13">[EAN-13]</dt>
-<dd>
-<span class="refAuthor">GS1</span>, <span class="refTitle">"International Article Number - EAN/UPC barcodes"</span>, <time datetime="2019">2019</time>, <span>&lt;<a href="https://www.gs1.org/standards/barcodes/ean-upc">https://www.gs1.org/standards/barcodes/ean-upc</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">GS1</span>, <span class="refTitle">"International Article Number - EAN/UPC barcodes"</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="https://www.gs1.org/standards/barcodes/ean-upc">https://www.gs1.org/standards/barcodes/ean-upc</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="PSA-FF">[PSA-FF]</dt>
-<dd>
-<span class="refAuthor">Arm</span>, <span class="refTitle">"Platform Security Architecture Firmware Framework 1.0 (PSA-FF)"</span>, <time datetime="2019-02">February 2019</time>, <span>&lt;<a href="https://pages.arm.com/psa-resources-ff.html">https://pages.arm.com/psa-resources-ff.html</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Arm</span>, <span class="refTitle">"Platform Security Architecture Firmware Framework 1.0 (PSA-FF)"</span>, <time datetime="2019-02" class="refDate">February 2019</time>, <span>&lt;<a href="https://pages.arm.com/psa-resources-ff.html">https://pages.arm.com/psa-resources-ff.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="PSA-SM">[PSA-SM]</dt>
-<dd>
-<span class="refAuthor">Arm</span>, <span class="refTitle">"Platform Security Architecture Security Model 1.0 (PSA-SM)"</span>, <time datetime="2019-02">February 2019</time>, <span>&lt;<a href="https://pages.arm.com/psa-resources-sm.html">https://pages.arm.com/psa-resources-sm.html</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Arm</span>, <span class="refTitle">"Platform Security Architecture Security Model 1.0 (PSA-SM)"</span>, <time datetime="2019-02" class="refDate">February 2019</time>, <span>&lt;<a href="https://pages.arm.com/psa-resources-sm.html">https://pages.arm.com/psa-resources-sm.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2046">[RFC2046]</dt>
+        <dd>
+<span class="refAuthor">Freed, N.</span><span class="refAuthor"> and N. Borenstein</span>, <span class="refTitle">"Multipurpose Internet Mail Extensions (MIME) Part Two: Media Types"</span>, <span class="seriesInfo">RFC 2046</span>, <span class="seriesInfo">DOI 10.17487/RFC2046</span>, <time datetime="1996-11" class="refDate">November 1996</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2046">https://www.rfc-editor.org/info/rfc2046</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
-<dd>
-<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6838">[RFC6838]</dt>
+        <dd>
+<span class="refAuthor">Freed, N.</span><span class="refAuthor">, Klensin, J.</span><span class="refAuthor">, and T. Hansen</span>, <span class="refTitle">"Media Type Specifications and Registration Procedures"</span>, <span class="seriesInfo">BCP 13</span>, <span class="seriesInfo">RFC 6838</span>, <span class="seriesInfo">DOI 10.17487/RFC6838</span>, <time datetime="2013-01" class="refDate">January 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6838">https://www.rfc-editor.org/info/rfc6838</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC7049">[RFC7049]</dt>
-<dd>
-<span class="refAuthor">Bormann, C.</span><span class="refAuthor"> and P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">RFC 7049</span>, <span class="seriesInfo">DOI 10.17487/RFC7049</span>, <time datetime="2013-10">October 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7049">https://www.rfc-editor.org/info/rfc7049</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Bormann, C.</span><span class="refAuthor"> and P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">RFC 7049</span>, <span class="seriesInfo">DOI 10.17487/RFC7049</span>, <time datetime="2013-10" class="refDate">October 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7049">https://www.rfc-editor.org/info/rfc7049</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8152">[RFC8152]</dt>
-<dd>
-<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE)"</span>, <span class="seriesInfo">RFC 8152</span>, <span class="seriesInfo">DOI 10.17487/RFC8152</span>, <time datetime="2017-07">July 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8152">https://www.rfc-editor.org/info/rfc8152</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refTitle">"CBOR Object Signing and Encryption (COSE)"</span>, <span class="seriesInfo">RFC 8152</span>, <span class="seriesInfo">DOI 10.17487/RFC8152</span>, <time datetime="2017-07" class="refDate">July 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8152">https://www.rfc-editor.org/info/rfc8152</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-<dd>
-<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8392">[RFC8392]</dt>
-<dd>
-<span class="refAuthor">Jones, M.</span><span class="refAuthor">, Wahlstroem, E.</span><span class="refAuthor">, Erdtman, S.</span><span class="refAuthor">, and H. Tschofenig</span>, <span class="refTitle">"CBOR Web Token (CWT)"</span>, <span class="seriesInfo">RFC 8392</span>, <span class="seriesInfo">DOI 10.17487/RFC8392</span>, <time datetime="2018-05">May 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8392">https://www.rfc-editor.org/info/rfc8392</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Jones, M.</span><span class="refAuthor">, Wahlstroem, E.</span><span class="refAuthor">, Erdtman, S.</span><span class="refAuthor">, and H. Tschofenig</span>, <span class="refTitle">"CBOR Web Token (CWT)"</span>, <span class="seriesInfo">RFC 8392</span>, <span class="seriesInfo">DOI 10.17487/RFC8392</span>, <time datetime="2018-05" class="refDate">May 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8392">https://www.rfc-editor.org/info/rfc8392</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC8610">[RFC8610]</dt>
-<dd>
-<span class="refAuthor">Birkholz, H.</span><span class="refAuthor">, Vigano, C.</span><span class="refAuthor">, and C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8610">https://www.rfc-editor.org/info/rfc8610</a>&gt;</span>. </dd>
+      <dd>
+<span class="refAuthor">Birkholz, H.</span><span class="refAuthor">, Vigano, C.</span><span class="refAuthor">, and C. Bormann</span>, <span class="refTitle">"Concise Data Definition Language (CDDL): A Notational Convention to Express Concise Binary Object Representation (CBOR) and JSON Data Structures"</span>, <span class="seriesInfo">RFC 8610</span>, <span class="seriesInfo">DOI 10.17487/RFC8610</span>, <time datetime="2019-06" class="refDate">June 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8610">https://www.rfc-editor.org/info/rfc8610</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 </dl>
 </section>
-<section id="section-8.2">
+<section id="section-9.2">
         <h3 id="name-informative-references">
-<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
 <dt id="I-D.ietf-rats-architecture">[I-D.ietf-rats-architecture]</dt>
-<dd>
-<span class="refAuthor">Birkholz, H.</span><span class="refAuthor">, Thaler, D.</span><span class="refAuthor">, Richardson, M.</span><span class="refAuthor">, Smith, N.</span><span class="refAuthor">, and W. Pan</span>, <span class="refTitle">"Remote Attestation Procedures Architecture"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-architecture-02</span>, <time datetime="2020-03-07">7 March 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-rats-architecture-02.txt">http://www.ietf.org/internet-drafts/draft-ietf-rats-architecture-02.txt</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span><span class="refAuthor">, Thaler, D.</span><span class="refAuthor">, Richardson, M.</span><span class="refAuthor">, Smith, N.</span><span class="refAuthor">, and W. Pan</span>, <span class="refTitle">"Remote Attestation Procedures Architecture"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-architecture-07</span>, <time datetime="2020-10-16" class="refDate">16 October 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-rats-architecture-07.txt">http://www.ietf.org/internet-drafts/draft-ietf-rats-architecture-07.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-rats-eat">[I-D.ietf-rats-eat]</dt>
-<dd>
-<span class="refAuthor">Mandyam, G.</span><span class="refAuthor">, Lundblade, L.</span><span class="refAuthor">, Ballesteros, M.</span><span class="refAuthor">, and J. O'Donoghue</span>, <span class="refTitle">"The Entity Attestation Token (EAT)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-eat-03</span>, <time datetime="2020-02-20">20 February 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-rats-eat-03.txt">http://www.ietf.org/internet-drafts/draft-ietf-rats-eat-03.txt</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Mandyam, G.</span><span class="refAuthor">, Lundblade, L.</span><span class="refAuthor">, Ballesteros, M.</span><span class="refAuthor">, and J. O'Donoghue</span>, <span class="refTitle">"The Entity Attestation Token (EAT)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-eat-04</span>, <time datetime="2020-08-31" class="refDate">31 August 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-rats-eat-04.txt">http://www.ietf.org/internet-drafts/draft-ietf-rats-eat-04.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-CoAP-Content-Formats">[IANA-CoAP-Content-Formats]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"CoAP Content-Formats"</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://www.iana.org/assignments/core-parameters">https://www.iana.org/assignments/core-parameters</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="IANA-CWT">[IANA-CWT]</dt>
-<dd>
-<span class="refAuthor">IANA</span>, <span class="refTitle">"CBOR Web Token (CWT) Claims"</span>, <time datetime="2020">2020</time>, <span>&lt;<a href="https://www.iana.org/assignments/cwt/cwt.xhtml">https://www.iana.org/assignments/cwt/cwt.xhtml</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"CBOR Web Token (CWT) Claims"</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://www.iana.org/assignments/cwt/cwt.xhtml">https://www.iana.org/assignments/cwt/cwt.xhtml</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IANA-MediaTypes">[IANA-MediaTypes]</dt>
+        <dd>
+<span class="refAuthor">IANA</span>, <span class="refTitle">"Media Types"</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="http://www.iana.org/assignments/media-types">http://www.iana.org/assignments/media-types</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="PSA">[PSA]</dt>
-<dd>
-<span class="refAuthor">Arm</span>, <span class="refTitle">"Platform Security Architecture Resources"</span>, <time datetime="2019">2019</time>, <span>&lt;<a href="https://www.arm.com/why-arm/architecture/platform-security-architecture/psa-resources">https://www.arm.com/why-arm/architecture/platform-security-architecture/psa-resources</a>&gt;</span>. </dd>
+        <dd>
+<span class="refAuthor">Arm</span>, <span class="refTitle">"Platform Security Architecture Resources"</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="https://www.arm.com/why-arm/architecture/platform-security-architecture/psa-resources">https://www.arm.com/why-arm/architecture/platform-security-architecture/psa-resources</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="TF-M">[TF-M]</dt>
-<dd>
-<span class="refAuthor">Linaro</span>, <span class="refTitle">"Trusted Firmware"</span>, <time datetime="2020">2020</time>, <span>&lt;<a href="https://www.trustedfirmware.org">https://www.trustedfirmware.org</a>&gt;</span>. </dd>
+      <dd>
+<span class="refAuthor">Linaro</span>, <span class="refTitle">"Trusted Firmware"</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://www.trustedfirmware.org">https://www.trustedfirmware.org</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 </dl>
 </section>
 </section>
@@ -1975,126 +2451,89 @@ the authors and the reference is this document.<a href="#section-7-1" class="pil
       <h2 id="name-example">
 <a href="#section-appendix.b" class="section-number selfRef">Appendix B. </a><a href="#name-example" class="section-name selfRef">Example</a>
       </h2>
-<p id="section-appendix.b-1">The following example shows an attestation token that was produced for a device
-that has a single-stage bootloader, and an RTOS with a device management
-client. From a code point of view, the RTOS and the device management client
-form a single binary.<a href="#section-appendix.b-1" class="pilcrow">¶</a></p>
-<p id="section-appendix.b-2">EC key using curve P-256 with:<a href="#section-appendix.b-2" class="pilcrow">¶</a></p>
-<ul>
-<li id="section-appendix.b-3.1">x: 0xdcf0d0f4bcd5e26a54ee36cad660d283d12abc5f7307de58689e77cd60452e75<a href="#section-appendix.b-3.1" class="pilcrow">¶</a>
-</li>
-<li id="section-appendix.b-3.2">y: 0x8cbadb5fe9f89a7107e5a2e8ea44ec1b09b7da2a1a82a0252a4c1c26ee1ed7cf<a href="#section-appendix.b-3.2" class="pilcrow">¶</a>
-</li>
-<li id="section-appendix.b-3.3">d: 0xc74670bcb7e85b3803efb428940492e73e3fe9d4f7b5a8ad5e480cbdbcb554c2<a href="#section-appendix.b-3.3" class="pilcrow">¶</a>
-</li>
-</ul>
-<p id="section-appendix.b-4">Key using COSE format (base64-encoded):<a href="#section-appendix.b-4" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-appendix.b-5">
+<p id="section-appendix.b-1">The following example shows a PSA attestation token for an hypothetical system
+comprising two measured software components (a boot loader and a trusted RTOS).
+The attesting device is in a lifecycle state <a href="#sec-security-lifecycle" class="xref">Section 3.3.1</a> of
+SECURED.  The attestation has been requested from a client residing in the
+SPE:<a href="#section-appendix.b-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-appendix.b-2">
 <pre>
-  pSJYIIy621/p+JpxB+Wi6OpE7BsJt9oqGoKgJSpMHCbuHtfPI1ggx0ZwvLfoWzgD77Q
-  olASS5z4/6dT3taitXkgMvby1VMIBAiFYINzw0PS81eJqVO42ytZg0oPRKrxfcwfeWG
-  ied81gRS51IAE=
-</pre><a href="#section-appendix.b-5" class="pilcrow">¶</a>
+{
+  / psa-profile /                 -75000: "PSA_IOT_PROFILE_1",
+  / psa-client-id /               -75001: 1,
+  / psa-lifecycle /               -75002: 12288,
+  / psa-implementation-id /       -75003: h'50515253545556575051
+52535455565750515253545556575051525354555657',
+  / psa-boot-seed /               -75004: h'DEADBEEFDEADBEEFDEAD
+BEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF',
+  / psa-certification-reference / -75005: "1234567890123",
+  / psa-software-components /     -75006: [
+    {
+      / measurement type /  1: "BL",
+      / measurement value / 2: h'0001020400010204000102040001020
+400010204000102040001020400010204',
+      / signer ID /         5: h'519200FF519200FF519200FF519200F
+F519200FF519200FF519200FF519200FF'
+    },
+    {
+      / measurement type /  1: "PRoT",
+      / measurement value / 2: h'0506070805060708050607080506070
+805060708050607080506070805060708',
+      / signer ID /         5: h'519200FF519200FF519200FF519200F
+F519200FF519200FF519200FF519200FF'
+    }
+  ],
+  / psa-nonce /       -75008: h'00010203000102030001020300010203
+00010203000102030001020300010203',
+  / psa-instance-id / -75009: h'01A0A1A2A3A0A1A2A3A0A1A2A3A0A1A2
+A3A0A1A2A3A0A1A2A3A0A1A2A3A0A1A2A3',
+  / psa-verification-service-indicator / -75010: "https://psa-ve
+rifier.org"
+}
+</pre><a href="#section-appendix.b-2" class="pilcrow">¶</a>
 </div>
-<p id="section-appendix.b-6">Example of EAT token (base64-encoded):<a href="#section-appendix.b-6" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-appendix.b-7">
+<p id="section-appendix.b-3">The JWK representation of the IAK used for creating the COSE Sign1 signature
+over the PSA token is:<a href="#section-appendix.b-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-appendix.b-4">
 <pre>
-  0oRDoQEmoFkCIqk6AAEk+1ggAAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8
-  6AAEk+lggAAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh86AAEk/YSkAlggAA
-  ECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8EZTMuMS40BVggAAECAwQFBgcIC
-  QoLDA0ODxAREhMUFRYXGBkaGxwdHh8BYkJMpAJYIAABAgMEBQYHCAkKCwwNDg8QERIT
-  FBUWFxgZGhscHR4fBGMxLjEFWCAAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0
-  eHwFkUFJvVKQCWCAAAQIDBAUGBwgJCgsMDQ4PEBESExQVFhcYGRobHB0eHwRjMS4wBV
-  ggAAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8BZEFSb1SkAlggAAECAwQFB
-  gcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8EYzIuMgVYIAABAgMEBQYHCAkKCwwNDg8Q
-  ERITFBUWFxgZGhscHR4fAWNBcHA6AAEk+RkwADoAAST/WCAAAQIDBAUGBwgJCgsMDQ4
-  PEBESExQVFhcYGRobHB0eHzoAASUBbHBzYV92ZXJpZmllcjoAAST4IDoAASUAWCEBAA
-  ECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh86AAEk93FQU0FfSW9UX1BST0ZJT
-  EVfMVhAWIYFCO5+jMSOuoctu11pSlQrEyKtDVECPBlw30KfBlAcaDqVEIoMztCm6A4J
-  ZvIr1j0cAFaXShG6My14d4f7Tw==
-</pre><a href="#section-appendix.b-7" class="pilcrow">¶</a>
+{
+  "kty": "EC",
+  "crv": "P-256",
+  "x": "MKBCTNIcKUSDii11ySs3526iDZ8AiTo7Tu6KPAqv7D4",
+  "y": "4Etl6SRW2YiLUrN5vfvVHuhp7x8PxltmWWlbbM4IFyM",
+  "d": "870MB6gfuTJ4HtUnUvYMyJpr5eUZNP4Bk43bVdj3eAE",
+  "use": "enc",
+  "kid": "1"
+}
+
+</pre><a href="#section-appendix.b-4" class="pilcrow">¶</a>
 </div>
-<p id="section-appendix.b-8">Same token using extended CBOR diagnostic format:<a href="#section-appendix.b-8" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-appendix.b-9">
+<p id="section-appendix.b-5">The resulting COSE object is:<a href="#section-appendix.b-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-appendix.b-6">
 <pre>
 18(
   [
-  / protected / h'a10126' / {
-      \ alg \ 1: -7 \ ECDSA 256 \
-    } / ,
-  / unprotected / {},
-  / payload / h'a93a000124fb5820000102030405060708090a0b0c0d0e0f10111
-  2131415161718191a1b1c1d1e1f3a000124fa5820000102030405060708090a0b0c
-  0d0e0f101112131415161718191a1b1c1d1e1f3a000124fd84a4025820000102030
-  405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0465332e312e
-  34055820000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1
-  d1e1f0162424ca4025820000102030405060708090a0b0c0d0e0f10111213141516
-  1718191a1b1c1d1e1f0463312e31055820000102030405060708090a0b0c0d0e0f1
-  01112131415161718191a1b1c1d1e1f016450526f54a40258200001020304050607
-  08090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f0463312e30055820000
-  102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f016441
-  526f54a4025820000102030405060708090a0b0c0d0e0f101112131415161718191
-  a1b1c1d1e1f0463322e32055820000102030405060708090a0b0c0d0e0f10111213
-  1415161718191a1b1c1d1e1f01634170703a000124f91930003a000124ff5820000
-  102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f3a0001
-  25016c7073615f76657269666965723a000124f8203a00012500582101000102030
-  405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f3a000124f771
-  5053415f496f545f50524f46494c455f
-  31' / {
-     / arm_psa_boot_seed / -75004: h'000102030405060708090a0b0c0d0e0f
-     101112131415161718191a1b1c1d1e1f',
-     / arm_psa_implementation_id / -75003: h'000102030405060708090a0b
-     0c0d0e0f101112131415161718191a1b1c1d1e1f',
-     / arm_psa_sw_components / -75006: [
-          {
-            / measurement / 2: h'000102030405060708090a0b0c0d0e0f1011
-            12131415161718191a1b1c1d1e1f',
-            / version / 4: "3.1.4",
-            / signerID / 5: h'000102030405060708090a0b0c0d0e0f1011121
-            31415161718191a1b1c1d1e1f',
-            / type / 1: "BL"
-          },
-          {
-            / measurement / 2: h'000102030405060708090a0b0c0d0e0f1011
-            12131415161718191a1b1c1d1e1f',
-            / version / 4: "1.1",
-            / signerID / 5: h'000102030405060708090a0b0c0d0e0f1011121
-            31415161718191a1b1c1d1e1f',
-            / type / 1: "PRoT"
-          },
-          {
-            / measurement / 2: h'000102030405060708090a0b0c0d0e0f1011
-            12131415161718191a1b1c1d1e1f',
-            / version / 4: "1.0",
-            / signerID / 5: h'000102030405060708090a0b0c0d0e0f1011121
-            31415161718191a1b1c1d1e1f',
-            / type / 1: "ARoT"
-          },
-          {
-            / measurement / 2: h'000102030405060708090a0b0c0d0e0f1011
-            12131415161718191a1b1c1d1e1f',
-            / version / 4: "2.2",
-            / signerID / 5: h'000102030405060708090a0b0c0d0e0f1011121
-            31415161718191a1b1c1d1e1f',
-            / type / 1: "App"
-          }
-        ],
-      / arm_psa_security_lifecycle / -75002: 12288 / SECURED /,
-      / arm_psa_nonce / -75008: h'000102030405060708090a0b0c0d0e0f101
-      112131415161718191a1b1c1d1e1f',
-      / arm_psa_origination / -75010: "psa_verifier",
-      / arm_psa_partition_id / -75001: -1,
-      / arm_psa_UEID / -75009: h'01000102030405060708090a0b0c0d0e0f10
-      1112131415161718191a1b1c1d1e1f',
-      / arm_psa_profile_id / -75000: "PSA_IoT_PROFILE_1"
-    }),
-    } / ,
-  / signature / h'58860508ee7e8cc48eba872dbb5d694a542b1322ad0d51023c1
-  970df429f06501c683a95108a0cced0a6e80e0966f22bd63d1c0056974a11ba332d
-  787787fb4f'
+    / protected /   h'A10126',
+    / unprotected / {},
+    / payload /     h'AA3A000124F7715053415F494F545F50524F46494C
+455F313A000124F8013A000124F91930003A000124FA58205051525354555657
+5051525354555657505152535455565750515253545556573A000124FB5820DE
+ADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEFDEADBEEF3A
+000124FC6D313233343536373839303132333A000124FD82A30162424C025820
+0001020400010204000102040001020400010204000102040001020400010204
+055820519200FF519200FF519200FF519200FF519200FF519200FF519200FF51
+9200FFA3016450526F5402582005060708050607080506070805060708050607
+08050607080506070805060708055820519200FF519200FF519200FF519200FF
+519200FF519200FF519200FF519200FF3A000124FF5820000102030001020300
+01020300010203000102030001020300010203000102033A00012500582101A0
+A1A2A3A0A1A2A3A0A1A2A3A0A1A2A3A0A1A2A3A0A1A2A3A0A1A2A3A0A1A2A33A
+00012501781868747470733A2F2F7073612D76657269666965722E6F7267',
+    / signature /   h'7C0FA38F80E5EA2A5C710A4BB37ABE63B26B25F17D
+B6BE9489587F9B3F8FEB80E0E410D8CDAAFAE5588024CB3E18D60C1F96CED9E0
+6743824614019E99BF13FE'
   ]
 )
-</pre><a href="#section-appendix.b-9" class="pilcrow">¶</a>
+</pre><a href="#section-appendix.b-6" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -2183,45 +2622,13 @@ and comments.<a href="#section-appendix.d-1" class="pilcrow">¶</a></p>
 </address>
 </section>
 </div>
-<script>var toc = document.getElementById("toc");
-var tocToggle = toc.querySelector("h2");
-var tocNav = toc.querySelector("nav");
-
-// mobile menu toggle
-tocToggle.onclick = function(event) {
-    if (window.innerWidth < 1024) {
- var tocNavDisplay = tocNav.currentStyle ? tocNav.currentStyle.display : getComputedStyle(tocNav, null).display;
- if (tocNavDisplay == "none") {
-     tocNav.style.display = "block";
- } else {
-     tocNav.style.display = "none";
- }
-    }
-}
-
-// toc anchor scroll to anchor
-tocNav.addEventListener("click", function (event) {
-    event.preventDefault();
-    if (event.target.nodeName == 'A') {
- if (window.innerWidth < 1024) {
-     tocNav.style.display = "none";
- }
- var href = event.target.getAttribute("href");
- var anchorId = href.substr(1);
- var anchor =  document.getElementById(anchorId);
- anchor.scrollIntoView(true);
- window.history.pushState("","",href);
-    }
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
 });
-
-// switch toc mode when window resized
-window.onresize = function () {
-    if (window.innerWidth < 1024) {
- tocNav.style.display = "none";
-    } else {
- tocNav.style.display = "block";
-    }
-}
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
 </script>
 </body>
 </html>
