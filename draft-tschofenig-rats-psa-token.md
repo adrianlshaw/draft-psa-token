@@ -476,9 +476,15 @@ The PSA attestation token is encoded in CBOR {{!RFC8949}} format.  Only
 definite-length string, arrays, and maps are allowed.
 
 Cryptographic protection is obtained by wrapping the `psa-token` map in a COSE
-Web Token (CWT) {{!RFC8392}}.  For asymmetric key algorithms, the signature
-structure MUST be COSE_Sign1.  For symmetric key algorithms, the signature
-structure MUST be COSE_Mac0.
+Web Token (CWT) {{!RFC8392}}.
+
+For asymmetric key algorithms, the signature structure MUST be COSE_Sign1.
+Conformant implementations that support COSE_Sign1 MUST be able to sign and/or
+verify PSA attestation tokens using ECDSA w/ SHA-256 (ES256).
+
+For symmetric key algorithms, the signature structure MUST be COSE_Mac0.
+Conformant implementations that support COSE_Mac0 MUST be able to sign and/or
+verify PSA attestation tokens using HMAC w/ SHA-256 (HMAC 256/256).
 
 The CWT CBOR tag (61) is not used.  An application that needs to exchange PSA
 attestation tokens can use the media type defined in {{sec-iana-media-types}}
